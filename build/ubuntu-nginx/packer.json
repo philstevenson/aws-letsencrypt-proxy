@@ -1,0 +1,30 @@
+{
+    "variables": {
+    },
+    "builders": [{
+        "name": "build-ubuntu-nginx",
+        "type": "amazon-ebs",
+        "region": "eu-west-1",
+        "source_ami": "ami-",
+        "instance_type": "m4.large",
+        "ssh_username": "ubuntu",
+        "ami_name": "ubuntu-nginx-{{timestamp}}",
+        "iam_instance_profile": "packer",
+        "ami_description": "letsencrypt nginx server built with Packer.io",
+        "vpc_id": "vpc-",
+        "subnet_id": "subnet-",
+        "associate_public_ip_address": "true",
+        "tags": {
+            "Environment": "prd",
+            "Name": "nginx Server"
+        }
+    }],
+
+    "provisioners": [
+      {
+        "type": "shell",
+        "execute_command": "echo 'packer' | sudo -S sh -c '{{ .Vars }} {{ .Path }}'",
+        "script": "build.sh"
+      }
+    ]
+}
